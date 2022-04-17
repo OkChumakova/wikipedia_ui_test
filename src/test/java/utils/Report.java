@@ -8,7 +8,7 @@ public abstract class Report {
     private static ExtentReports extentReport;
 
     public static void createReport() {
-        ExtentSparkReporter reporter = new ExtentSparkReporter(IPropertyReader.getPathForReport());
+        ExtentSparkReporter reporter = new ExtentSparkReporter(PropertyReader.getPathForReport());
 
         reporter.config().setReportName("Wikipedia Automation Results");
         reporter.config().setDocumentTitle("UI Results");

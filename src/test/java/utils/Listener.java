@@ -8,13 +8,19 @@ import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 
+import java.util.Arrays;
+
 public class Listener implements ITestListener {
-    ExtentTest test;
     ExtentReports extent = Report.getExtentReport();
-    ThreadLocal<ExtentTest> extentTest = new ThreadLocal<ExtentTest>();
+    ThreadLocal<ExtentTest> extentTest = new ThreadLocal<>();
 
     public void onTestStart(ITestResult result) {
-        test = extent.createTest(result.getMethod().getMethodName());
+        String methodName = result.getMethod().getMethodName();
+
+        String paramName = result.getParameters().length > 0 ?
+                " " + Arrays.asList(result.getParameters())
+                : "";
+        ExtentTest test = extent.createTest(methodName + paramName);
         extentTest.set(test);
     }
 
@@ -27,8 +33,10 @@ public class Listener implements ITestListener {
         ITestContext context = result.getTestContext();
         WebDriver driver = (WebDriver) context.getAttribute("WebDriver");
         String testMethodName = result.getMethod().getMethodName();
-        IScreenshot.takeScreenshot(driver, testMethodName);
-        String scrShotLocation = IPropertyReader.getRelativePathForScreenshot() + testMethodName + ".png";
+
+        // Take screenshot
+        Screenshot.takeScreenshot(driver, testMethodName);
+        String scrShotLocation = PropertyReader.getRelativePathForScreenshot() + testMethodName + ".png";
 
         extentTest.get().addScreenCaptureFromPath(scrShotLocation, testMethodName);
     }
@@ -49,8 +57,6 @@ public class Listener implements ITestListener {
     }
 
     public void onFinish(ITestContext context) {
-        // TODO Auto-generated method stub
         extent.flush();
     }
-
 }

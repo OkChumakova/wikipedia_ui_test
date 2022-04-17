@@ -5,14 +5,14 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
-public interface IDriverFactory {
+public class DriverFactory {
 
-     static WebDriver getWebDriver(Browser browser) {
+     public static WebDriver getWebDriver(Browser browser) {
         WebDriver driver = null;
         switch (browser) {
             case CHROME:
                 ChromeOptions chromeOptions = new ChromeOptions();
-                chromeOptions.addArguments("headless");
+                chromeOptions.addArguments("--headless");
                 WebDriverManager.chromedriver().setup();
                 driver = new ChromeDriver(chromeOptions);
                 break;

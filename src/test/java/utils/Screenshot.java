@@ -8,12 +8,12 @@ import org.openqa.selenium.WebDriver;
 import java.io.File;
 import java.io.IOException;
 
-public interface IScreenshot {
+public class Screenshot {
 
      static void takeScreenshot(WebDriver driver, String methodName){
         TakesScreenshot scrShot = ((TakesScreenshot) driver);
             File SrcFile = scrShot.getScreenshotAs(OutputType.FILE);
-            File DestFile = new File(IPropertyReader.getAbsolutePathForScreenshot() + methodName + ".png");
+            File DestFile = new File(PropertyReader.getAbsolutePathForScreenshot() + methodName + ".png");
 
             try {
                 FileUtils.copyFile(SrcFile, DestFile);

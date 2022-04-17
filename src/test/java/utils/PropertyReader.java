@@ -5,9 +5,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-public interface IPropertyReader {
+public class PropertyReader {
 
-    static String getPropertyFromFile(String propertyName) {
+    public static String getPropertyFromFile(String propertyName) {
 
         Properties prop = new Properties();
 
@@ -27,29 +27,27 @@ public interface IPropertyReader {
         }
     }
 
-     static String getUrl() {
+    public static String getUrl() {
         return getProperty("url");
     }
 
-     static Browser getBrowser() {
+    public static Browser getBrowser() {
         return Browser.valueOf(getProperty("browser"));
     }
 
-     static String getAbsolutePathForScreenshot() {
+    public static String getAbsolutePathForScreenshot() {
         return (getProperty("absolutePathForScreenshot"));
     }
 
-     static String getPathForReport() {
+    public static String getPathForReport() {
         return getProperty("pathForReport");
     }
 
-     static String getRelativePathForScreenshot() {
+    public static String getRelativePathForScreenshot() {
         return getProperty("relativePathForScreenshot");
     }
 
-     static String getPathForLanguageTestExcelFile() {
+    public static String getPathForLanguageTestExcelFile() {
         return getProperty("pathForLanguageTestExcelFile");
     }
-
-
 }

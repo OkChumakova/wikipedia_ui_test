@@ -11,15 +11,15 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
 
-public interface IExcelPoiParser {
+public class ExcelPoiParser {
 
-    static Object[][] getData() {
+    public static Object[][] getData() {
         Map<String, String> valuesReadFromExcel = new HashedMap<>();
 
         FileInputStream fis;
         XSSFWorkbook workbook = null;
         try {
-            fis = new FileInputStream(IPropertyReader.getPathForLanguageTestExcelFile());
+            fis = new FileInputStream(PropertyReader.getPathForLanguageTestExcelFile());
             workbook = new XSSFWorkbook(fis);
         } catch (IOException e) {
             e.printStackTrace();

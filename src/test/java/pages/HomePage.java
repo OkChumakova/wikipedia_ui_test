@@ -5,7 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.testng.Assert;
-import utils.IPropertyReader;
+import utils.PropertyReader;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ public class HomePage extends BasePage {
 
     public HomePage(WebDriver driver) {
         super(driver);
-        driver.get(IPropertyReader.getUrl());
+        driver.get(PropertyReader.getUrl());
     }
 
     @FindBy(css = "#p-lang span.vector-menu-heading-label")

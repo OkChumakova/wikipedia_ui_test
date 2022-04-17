@@ -2,75 +2,61 @@ package tests;
 
 import org.openqa.selenium.WebDriver;
 import org.testng.ITestContext;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import pages.HomePage;
-import utils.IDriverFactory;
-import utils.IExcelPoiParser;
-import utils.IPropertyReader;
+import utils.DriverFactory;
+import utils.ExcelPoiParser;
+import utils.PropertyReader;
 
 
 public class HomePageTest extends BaseTest {
 
+    WebDriver driver;
+    HomePage homePage;
+
     @Test
-    public void checkTabTitle(ITestContext context) {
-        WebDriver driver = IDriverFactory.getWebDriver(IPropertyReader.getBrowser());
-        try{
-            context.setAttribute("WebDriver", driver);
-            HomePage homePage = new HomePage(driver);
+    public void checkTabTitle() {
             homePage.assertTabTitle("Wikipedia, the free encyclopedia");
-        } finally {
-            driver.quit();
-        }
     }
 
     @Test
-    public void checkWelcomeText(ITestContext context) {
-        WebDriver driver = IDriverFactory.getWebDriver(IPropertyReader.getBrowser());
-        try{
-            context.setAttribute("WebDriver", driver);
-            HomePage homePage = new HomePage(driver);
+    public void checkWelcomeText() {
             homePage.assertTextIsPresent("Welcome to Wikipedia,");
-        } finally {
-            driver.quit();
-        }
     }
 
     @Test(dataProvider = "getDataForLanguageSwitch")
-    public void checkLanguageSwitch(String language, String value, ITestContext context) {
-        WebDriver driver = IDriverFactory.getWebDriver(IPropertyReader.getBrowser());
-        try {
-            context.setAttribute("WebDriver", driver);
-            HomePage homePage = new HomePage(driver);
+    public void checkLanguageSwitch(String language, String value) {
             homePage.checkLanguageSwitching(driver, language, value);
-        } finally {
-            driver.quit();
-        }
     }
 
     @Test(dataProvider = "getDataForSearch")
-    public void checkSearch(String searchValue, ITestContext context) {
-        WebDriver driver = IDriverFactory.getWebDriver(IPropertyReader.getBrowser());
-        context.setAttribute("WebDriver", driver);
-        HomePage homePage = new HomePage(driver);
-        homePage.clickSearchInputField()
-                .enterKeysIntoSearchField(searchValue)
-                .assertSearchResults(searchValue);
-        driver.quit();
+    public void checkSearch(String searchValue) {
+            homePage.clickSearchInputField()
+                    .enterKeysIntoSearchField(searchValue)
+                    .assertSearchResults(searchValue);
     }
 
-//    @Test
-//    public void checkLinks(ITestContext context) {
-//        WebDriver driver = IDriverFactory.getWebDriver(IPropertyReader.getBrowser());
-//        context.setAttribute("WebDriver", driver);
-//        HomePage homePage = new HomePage(driver);
-//        homePage.checkBrokenLinks(driver, IPropertyReader.getUrl());
-//        driver.quit();
-//    }
+    @Test
+    public void checkLinks() {
+        homePage.checkBrokenLinks(driver, PropertyReader.getUrl());
+    }
+
+
+    @BeforeMethod
+    public void BeforeMethod(ITestContext context) {
+        this.driver =  DriverFactory.getWebDriver(PropertyReader.getBrowser());
+        context.setAttribute("WebDriver", driver);
+        this.homePage = new HomePage(driver);
+    }
+
+    @AfterMethod
+    public void AfterMethod() {
+        this.driver.quit();
+    }
 
     @DataProvider
     public Object[][] getDataForLanguageSwitch() {
-        return IExcelPoiParser.getData();
+        return ExcelPoiParser.getData();
     }
 
     @DataProvider
@@ -79,7 +65,6 @@ public class HomePageTest extends BaseTest {
         data[0][0] = "for";
         data[1][0] = "tab";
         data[2][0] = "low";
-        System.out.println(data);
         return data;
     }
 }
